@@ -1,0 +1,20 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: customer_intelligence_db
+    restart: always
+
+    environment:
+      POSTGRES_DB: customer_intelligence
+      POSTGRES_USER: analyst
+      POSTGRES_PASSWORD: analyst123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
