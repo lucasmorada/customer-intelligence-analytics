@@ -82,3 +82,45 @@ FROM customers
 GROUP BY acquisition_channel
 
 ORDER BY churn_rate DESC;
+
+SELECT
+    customer_id,
+    plan,
+    months_as_customer,
+    monthly_revenue,
+    lifetime_revenue,
+    churn
+FROM customers
+ORDER BY lifetime_revenue DESC
+LIMIT 20;
+
+SELECT
+
+    CASE
+        WHEN monthly_usage_hours < 10
+            THEN 'Baixa utilização'
+
+        WHEN monthly_usage_hours < 25
+            THEN 'Média utilização'
+
+        ELSE 'Alta utilização'
+    END AS usage_category,
+
+    COUNT(*) AS customers,
+
+    ROUND(
+        SUM(
+            CASE
+                WHEN churn = 'Yes'
+                THEN 1
+                ELSE 0
+            END
+        ) * 100.0 / COUNT(*),
+        2
+    ) AS churn_rate
+
+FROM customers
+
+GROUP BY usage_category
+
+ORDER BY churn_rate DESC;
